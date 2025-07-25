@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla: Electric Cars, Solar & Clean Energy</title>
+    <link rel="icon" href="https://www.tesla.com/themes/custom/tesla_frontend/assets/favicons/favicon.ico" type="image/x-icon">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Gotham SSm', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        html, body {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        /* Header and Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            transition: background-color 0.3s ease;
+        }
+        
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            width: 120px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .nav-links a {
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .menu-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: none;
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        
+        /* Section styles */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 80px 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        section.full-bg {
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-content {
+            text-align: center;
+            padding-top: 80px;
+        }
+        
+        h2 {
+            font-size: 40px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+        
+        /* Buttons */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .button {
+            padding: 12px 32px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .button-primary {
+            background-color: rgba(23, 26, 32, 0.9);
+            color: white;
+            border: none;
+        }
+        
+        .button-primary:hover {
+            background-color: rgb(23, 26, 32);
+        }
+        
+        .button-secondary {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+            border: none;
+        }
+        
+        .button-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Specs display */
+        .specs {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .spec-item h3 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .spec-item p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        /* Charging Section */
+        #charging {
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 40px;
+        }
+        
+        .charging-container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .charging-text {
+            flex: 1;
+        }
+        
+        .charging-text h2 {
+            text-align: left;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .charging-text p {
+            text-align: left;
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+        
+        .charging-image {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .charging-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .charging-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .model-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            text-align: left;
+        }
+        
+        .model-overlay h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .model-overlay p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .charging-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 24px;
+            color: #e82127;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .stat-card p {
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #f9f9f9;
+            padding: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        footer ul {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* Mobile styles */
+        @media (max-width: 1000px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .menu-button {
+                display: block;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                margin-left: auto;
+                margin-right: auto;
+                max-width: 90%;
+            }
+            
+            .specs {
+                gap: 30px;
+                flex-wrap: wrap;
+            }
+            
+            .charging-container {
+                flex-direction: column-reverse;
+            }
+            
+            .charging-text h2,
+            .charging-text p {
+                text-align: center;
+            }
+            
+            .charging-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .charging-text .buttons {
+                flex-direction: column;
+            }
+        }
+        
+        /* Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: white;
+            z-index: 200;
+            padding: 60px 40px;
+            transition: right 0.4s ease;
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-menu.active {
+            right: 0;
+        }
+        
+        .mobile-menu ul {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .mobile-menu a {
+            font-size: 16px;
+            font-weight: 600;
+            display: block;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .close-menu {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 150;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="logo">
+            <a href="#">
+                <svg viewBox="0 0 342 35" xmlns="http://www.w3.org/2000/svg" width="120">
+                    <path d="M0 .1a9.7 9.7 0 0 0 7 7h11l.5.1v27.6h6.8V7.3L26 7h11a9.8 9.8 0 0 0 7-7H0zm238.6 0h-6.8v34.8H263a9.7 9.7 0 0 0 6-6.8h-30.3V0zm-52.3 6.8c3.6-1 6.6-3.8 7.4-6.9l-38.1.1v20.6h31.1v7.2h-24.4a13.6 13.6 0 0 0-8.7 7h39.9v-21h-31.2v-7h24zm116.2 28h6.7v-14h24.6v14h6.7v-21h-38zM85.3 7h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 13.8h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zm0 14.1h26a9.6 9.6 0 0 0 7.1-7H78.3a9.6 9.6 0 0 0 7 7zM308.5 7h26a9.6 9.6 0 0 0 7-7h-40a9.6 9.6 0 0 0 7 7z" fill="currentColor"></path>
+                </svg>
+            </a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#model-s">Model S</a></li>
+                <li><a href="#model-3">Model 3</a></li>
+                <li><a href="#model-x">Model X</a></li>
+                <li><a href="#model-y">Model Y</a></li>
+                <li><a href="#cybertruck">Cybertruck</a></li>
+                <li><a href="#charging">Quvvatlash</a></li>
+            </ul>
+        </nav>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#shop">Do'kon</a></li>
+                <li><a href="#account">Akkaunt</a></li>
+            </ul>
+            <button class="menu-button">Menu</button>
+        </div>
+    </header>
+
+    <div class="mobile-menu">
+        <button class="close-menu">&times;</button>
+        <ul>
+            <li><a href="#model-s">Model S</a></li>
+            <li><a href="#model-3">Model 3</a></li>
+            <li><a href="#model-x">Model X</a></li>
+            <li><a href="#model-y">Model Y</a></li>
+            <li><a href="#cybertruck">Cybertruck</a></li>
+            <li><a href="#charging">Quvvatlash</a></li>
+            <li><a href="#shop">Do'kon</a></li>
+            <li><a href="#account">Akkaunt</a></li>
+        </ul>
+    </div>
+    
+    <div class="overlay"></div>
+
+    <!-- Hero Section - Model 3 -->
+    <section id="model-3" class="full-bg" style="background-image: url('https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto:best/Model-3-Main-Hero-Desktop-LHD');">
+        <div class="section-content">
+            <h2 class="fade-in">Model 3</h2>
+            <p class="subtitle fade-in">Yuqori texnologiyali, arzon, to'liq elektr oilaviy transport vositasi</p>
+        </div>
+        <div>
+            <div class="specs">
+                <div class="spec-item fade-in">
+                    <h3>536 km</h3>
+                    <p>Maksimum masofa</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>3.1 s</h3>
+                    <p>0-100 km/s</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>261 km/soat</h3>
+                    <p>Maksimum tezlik</p>
+                </div>
+            </div>
+            <div class="buttons">
+                <a href="#order-model-3" class="button button-primary fade-in">Buyurtma berish</a>
+                <a href="#learn-model-3" class="button button-secondary fade-in">Batafsil ma'lumot</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Model S Section -->
+    <section id="model-s" class="full-bg" style="background-image: url('https://digitalassets.tesla.com/tesla-contents/image/upload/h_2400,w_2880,c_fit,f_auto,q_auto:best/Homepage-Model-S-Desktop-LHD');">
+        <div class="section-content">
+            <h2 class="fade-in">Model S</h2>
+            <p class="subtitle fade-in">Samaradorlik va masofa uchun moljallangan, dadil dizayn</p>
+        </div>
+        <div>
+            <div class="specs">
+                <div class="spec-item fade-in">
+                    <h3>650 km</h3>
+                    <p>Maksimum masofa</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>1.99 s</h3>
+                    <p>0-100 km/s</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>322 km/soat</h3>
+                    <p>Maksimum tezlik</p>
+                </div>
+            </div>
+            <div class="buttons">
+                <a href="#order-model-s" class="button button-primary fade-in">Buyurtma berish</a>
+                <a href="#learn-model-s" class="button button-secondary fade-in">Batafsil ma'lumot</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charging Section -->
+    <section id="charging">
+        <div class="charging-container">
+            <div class="charging-text">
+                <h2 class="fade-in">Quvvatlash</h2>
+                <p class="fade-in">
+                    Uyda quvvatlash telefoningizni ulash kabi oson, va Superchargerlar uzoq masofaga sayohat qilishni osonlashtiradi.
+                </p>
+                
+                <div class="charging-stats">
+                    <div class="stat-card fade-in">
+                        <h3>45,000+</h3>
+                        <p>Dunyo bo'ylab Superchargerlar</p>
+                    </div>
+                    <div class="stat-card fade-in">
+                        <h3>250 kW</h3>
+                        <p>Maksimal quvvatlash quvvati</p>
+                    </div>
+                    <div class="stat-card fade-in">
+                        <h3>15 daqiqa</h3>
+                        <p>320 kilometrgacha masofa uchun</p>
+                    </div>
+                    <div class="stat-card fade-in">
+                        <h3>536 km</h3>
+                        <p>Model 3 quvvat masofasi</p>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <a href="#charging-find" class="button button-primary fade-in">Quvvatlash joylarini topish</a>
+                    <a href="#charging-learn" class="button button-secondary fade-in">Ko'proq ma'lumot</a>
+                </div>
+            </div>
+            
+            <div class="charging-image fade-in">
+                <img src="https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto:best/Model-3-Main-Hero-Desktop-LHD" alt="Tesla Model 3 Charging">
+                <div class="model-overlay">
+                    <h3>Model 3</h3>
+                    <p>Ultra-tez quvvatlash qobiliyati bilan</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Model X Section -->
+    <section id="model-x" class="full-bg" style="background-image: url('https://digitalassets.tesla.com/tesla-contents/image/upload/h_1800,w_2880,c_fit,f_auto,q_auto:best/Homepage-Model-X-Desktop-LHD');">
+        <div class="section-content">
+            <h2 class="fade-in">Model X</h2>
+            <p class="subtitle fade-in">Eng xavfsiz, eng tez, eng qobiliyatli SUV</p>
+        </div>
+        <div>
+            <div class="specs">
+                <div class="spec-item fade-in">
+                    <h3>560 km</h3>
+                    <p>Maksimum masofa</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>2.5 s</h3>
+                    <p>0-100 km/s</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>282 km/soat</h3>
+                    <p>Maksimum tezlik</p>
+                </div>
+            </div>
+            <div class="buttons">
+                <a href="#order-model-x" class="button button-primary fade-in">Buyurtma berish</a>
+                <a href="#learn-model-x" class="button button-secondary fade-in">Batafsil ma'lumot</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Model Y Section -->
+    <section id="model-y" class="full-bg" style="background-image: url('https://digitalassets.tesla.com/tesla-contents/image/upload/h_2400,w_2880,c_fit,f_auto,q_auto:best/Homepage-Model-Y-Global-Desktop');">
+        <div class="section-content">
+            <h2 class="fade-in">Model Y</h2>
+            <p class="subtitle fade-in">Kop qirrali elektr SUV, minimal hajm bilan maksimal foyda</p>
+        </div>
+        <div>
+            <div class="specs">
+                <div class="spec-item fade-in">
+                    <h3>531 km</h3>
+                    <p>Maksimum masofa</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>3.5 s</h3>
+                    <p>0-100 km/s</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>250 km/soat</h3>
+                    <p>Maksimum tezlik</p>
+                </div>
+            </div>
+            <div class="buttons">
+                <a href="#order-model-y" class="button button-primary fade-in">Buyurtma berish</a>
+                <a href="#learn-model-y" class="button button-secondary fade-in">Batafsil ma'lumot</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cybertruck Section -->
+    <section id="cybertruck" class="full-bg" style="background-image: url('https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto:best/Homepage-Cybertruck-Desktop');">
+        <div class="section-content">
+            <h2 class="fade-in">Cybertruck</h2>
+            <p class="subtitle fade-in">Yukxonali mashinadan yaxshiroq foydalilik, sport mashinasidan yaxshiroq ishlash</p>
+        </div>
+        <div>
+            <div class="specs">
+                <div class="spec-item fade-in">
+                    <h3>800+ km</h3>
+                    <p>Maksimum masofa</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>2.9 s</h3>
+                    <p>0-100 km/s</p>
+                </div>
+                <div class="spec-item fade-in">
+                    <h3>210 km/soat</h3>
+                    <p>Maksimum tezlik</p>
+                </div>
+            </div>
+            <div class="buttons">
+                <a href="#order-cybertruck" class="button button-primary fade-in">Buyurtma berish</a>
+                <a href="#learn-cybertruck" class="button button-secondary fade-in">Batafsil ma'lumot</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <ul>
+            <li><a href="#">Tesla © 2023</a></li>
+            <li><a href="#">Maxfiylik</a></li>
+            <li><a href="#">Ma'lumotlardan foydalanish</a></li>
+            <li><a href="#">Kontaktlar</a></li>
+            <li><a href="#">Yangiliklar</a></li>
+        </ul>
+        <p>Bu sahifa Tesla Inc. bilan bog'liq emas. Faqat o'rganish maqsadida yaratilgan.</p>
+    </footer>
+
+    <script>
+        // Handle scroll effect for header
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu
+        const menuButton = document.querySelector('.menu-button');
+        const closeButton = document.querySelector('.close-menu');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const overlay = document.querySelector('.overlay');
+        const mobileLinks = document.querySelectorAll('.mobile-menu a');
+
+        function openMenu() {
+            mobileMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        menuButton.addEventListener('click', openMenu);
+        closeButton.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Fade in animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
